@@ -12,7 +12,7 @@ We’ve used a modern tech stack to build and power this CRM. Here’s a breakdo
 
 - **React**: A powerful JavaScript library for building user interfaces. React allows us to create a dynamic and responsive UI for users to interact with the CRM.
 - **Next.js**: A React framework for building production-grade web applications with features like server-side rendering and static site generation.
-- **Tailwind CSS**: A utility-first CSS framework for creating highly customizable designs with minimal effort.
+- **UI Framework**: We used Material UI for building the user interface of the CRM, providing a modern and responsive design.
 - **Axios**: A promise-based HTTP client for the browser and Node.js, which we use to make API requests.
 
 ### Backend
