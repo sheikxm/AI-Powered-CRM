@@ -161,8 +161,21 @@ const ContactManagement = () => {
     document.body.removeChild(link);
   };
   const sortedContacts = [...contacts].sort((a, b) => {
-    if (a[orderBy] < b[orderBy]) return order === "asc" ? -1 : 1;
-    if (a[orderBy] > b[orderBy]) return order === "asc" ? 1 : -1;
+    // Ensure orderBy is a valid key of Contact
+    if (!a.hasOwnProperty(orderBy) || !b.hasOwnProperty(orderBy)) {
+      return 0; // If orderBy is not a valid property, don't change the order
+    }
+  
+    const valueA = a[orderBy as keyof Contact];
+    const valueB = b[orderBy as keyof Contact];
+  
+    // Check for undefined or null values
+    if (valueA == null || valueB == null) {
+      return 0; // Don't change order if one of the values is undefined or null
+    }
+  
+    if (valueA < valueB) return order === "asc" ? -1 : 1;
+    if (valueA > valueB) return order === "asc" ? 1 : -1;
     return 0;
   });
 
