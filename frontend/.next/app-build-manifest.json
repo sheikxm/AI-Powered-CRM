@@ -15,15 +15,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/layout.js"
     ],
-    "/(dashboard)/orders/page": [
+    "/(dashboard)/contacts/addnewcontacts/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/orders/page.js"
+      "static/chunks/app/(dashboard)/contacts/addnewcontacts/page.js"
     ],
     "/(dashboard)/contacts/edit/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/contacts/edit/[id]/page.js"
+    ],
+    "/(dashboard)/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/page.js"
     ]
   }
 }

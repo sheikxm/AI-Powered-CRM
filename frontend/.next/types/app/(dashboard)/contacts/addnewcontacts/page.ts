@@ -1,8 +1,8 @@
-// File: /home/sheik/CRM/frontend/app/(dashboard)/orders/page.tsx
-import * as entry from '../../../../../app/(dashboard)/orders/page.js'
+// File: /home/sheik/CRM/frontend/app/(dashboard)/contacts/addnewcontacts/page.tsx
+import * as entry from '../../../../../../app/(dashboard)/contacts/addnewcontacts/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../../app/(dashboard)/orders/page.js')
+type TEntry = typeof import('../../../../../../app/(dashboard)/contacts/addnewcontacts/page.js')
 
 // Check that the entry is a valid entry
 checkFields<Diff<{

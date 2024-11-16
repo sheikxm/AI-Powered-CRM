@@ -4,6 +4,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import type { Navigation } from '@toolpad/core/AppProvider';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import theme from '../theme';
 
@@ -18,19 +19,14 @@ const NAVIGATION: Navigation = [
     icon: <DashboardIcon />,
   },
   {
-    segment: 'orders',
-    title: 'Orders',
-    icon: <ShoppingCartIcon />,
-  },
-  {
     segment: 'contacts',
     title: 'contacts',
-    icon: <ShoppingCartIcon />,
+    icon: <AccountBoxIcon/>,
   },
 ];
 
 const BRANDING = {
-  title: 'My Toolpad Core Next.js App',
+  title: 'AI Powered CRM',
 };
 
 

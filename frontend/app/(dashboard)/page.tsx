@@ -7,7 +7,7 @@ export default function HomePage() {
 
   return (    
       <Typography>
-        Welcome to <Link href="https://mui.com/toolpad/core/introduction">Toolpad Core!</Link>
+        welcome to AI powered CRM Admin Dashboard
       </Typography>
   );
 }

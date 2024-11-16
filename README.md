@@ -4,6 +4,34 @@
 
 Welcome to the **AI Powered CRM** project! Our goal is to create a cutting-edge customer relationship management system that leverages artificial intelligence to streamline and enhance various business processes. While we're in the early stages of development, we've successfully implemented **Contact Management Features** as a foundational part of the system. This will eventually be integrated with advanced AI functionalities to automate tasks and offer insightful analytics.
 
+## Database Schema
+
+The database schema for the AI-Powered CRM focuses on managing contact information efficiently. Below is the structure of the `contacts` collection, which is used to store details about each contact.
+
+### `contacts` Collection
+
+| Field Name  | Data Type   | Constraints                   | Description                               |
+|-------------|-------------|-------------------------------|-------------------------------------------|
+| `firstName` | String      | Required                     | The first name of the contact.           |
+| `lastName`  | String      | Required                     | The last name of the contact.            |
+| `email`     | String      | Required, Unique             | The contact's email address.             |
+| `phone`     | String      | Required                     | The contact's phone number.              |
+| `company`   | String      | Optional                     | The name of the company the contact belongs to. |
+| `jobTitle`  | String      | Optional                     | The contact's job title or role.         |
+
+### Example Document
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "phone": "1234567890",
+  "company": "TechCorp",
+  "jobTitle": "Software Engineer"
+}
+
+
 ## Technologies Used
 
 We’ve used a modern tech stack to build and power this CRM. Here’s a breakdown of the key technologies:
