@@ -154,4 +154,4 @@ Sales Predictions: Implement machine learning models to predict sales trends and
 We’re excited about the potential of this AI-powered CRM and will continue to expand its capabilities over time!
 
 Contributing
-We welcome contributions from the community! If you would like to contribute to the project, please fork the repository and create a pull request. Make sure to follow our code of conduct and contribution guidelines.
+We welcome contributions from the community! If you would like to contribute to the project, please fork the repository and create a pull request. Make sure to follow our code of conduct and contribution guidelines..
