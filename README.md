@@ -82,23 +82,15 @@ npm install
 
 Go to the backend directory and install dependencies:
 
-```bash
 cd backend
 npm install
-Run the Application
-To run both the frontend and backend locally, use the following commands:
 
 Start the Backend
-bash
-Copy code
+
 cd backend
 npm start
 Start the Frontend
-bash
-Copy code
+
 cd frontend
 npm run dev
 The frontend will be available at http://localhost:3000 and the backend will be running on http://localhost:5000.
-
-sql
-Copy code
