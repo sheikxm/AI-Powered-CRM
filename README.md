@@ -69,3 +69,19 @@ To get started with this CRM, follow the steps below:
 ```bash
 git clone https://github.com/your-username/ai-powered-crm.git
 cd ai-powered-crm
+## Install Dependencies
+
+### Frontend
+Go to the frontend directory and install dependencies:
+
+```bash
+cd frontend
+npm install
+
+## Backend
+
+Go to the backend directory and install dependencies:
+
+```bash
+cd backend
+npm install
