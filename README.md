@@ -65,7 +65,25 @@ We’ve implemented the first key feature: **Contact Management**. With this fea
 - Add, update, and delete customer contact details.
 - Search and filter contacts by different criteria like first name, last name, email, etc.
 - Display contacts in a user-friendly table format.
+### 2. Import Contacts
+- You can import contacts using a CSV file.
+- The **Import Contacts** button allows you to select a `.csv` file from your local machine and upload it to the system.
+- The file is parsed, and the contact data is added to the database.
 
+### 3. Export Contacts
+- The **Export Contacts** button allows you to download all the current contacts as a `.csv` file.
+- This exported file includes the following fields: First Name, Last Name, Email, Phone, Company, and Job Title.
+
+## How to Use
+
+1. **Add a new contact**: Click on the "Add New Contact" button to add a new contact.
+2. **Import contacts**: 
+   - Click the "Import Contacts" button.
+   - Select a `.csv` file containing contact information.
+   - The system will process the file and add the contacts to the system.
+3. **Export contacts**: 
+   - Click the "Export Contacts" button.
+   - A `.csv` file containing all your contacts will be downloaded automatically.
 This feature serves as the foundation for our CRM, allowing businesses to manage customer information easily.
 
 ## How We Developed It
