@@ -21,7 +21,6 @@ The database schema for the AI-Powered CRM focuses on managing contact informati
 
 ### Example Document
 
-```json
 {
   "firstName": "John",
   "lastName": "Doe",
