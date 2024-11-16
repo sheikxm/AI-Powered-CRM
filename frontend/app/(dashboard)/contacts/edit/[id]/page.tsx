@@ -1,5 +1,5 @@
 'use client';
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { usePathname } from 'next/navigation';
@@ -29,7 +29,7 @@ const EditContact = () => {
     if (id) {
       const fetchContact = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/contacts/${id}`);
+          const response = await axios.get(`${API_URL}/contacts/${id}`);
           setFormData(response.data); // Preload the data
         } catch (error) {
           console.error('Error fetching contact:', error);
@@ -48,7 +48,7 @@ const EditContact = () => {
     e.preventDefault();
     try {
       // Update the contact in the database
-      await axios.put(`http://localhost:5000/contacts/${id}`, formData);
+      await axios.put(`${API_URL}/contacts/${id}`, formData);
       window.location.href = '/contacts'; // Redirect back to the contact list
     } catch (error) {
       console.error('Error updating contact:', error);

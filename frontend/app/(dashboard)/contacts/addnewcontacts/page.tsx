@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from "react";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 import {
   Box,
   Button,
@@ -28,7 +29,7 @@ const addnewcontact = () => {
   const handleFormSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/contacts/", {
+      const response = await fetch(`${API_URL}/contacts/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

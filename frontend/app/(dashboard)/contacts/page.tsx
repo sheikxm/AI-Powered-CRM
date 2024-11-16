@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 import {
   Box,
   Button,
@@ -49,7 +50,7 @@ const ContactManagement = () => {
 
   const fetchContacts = async (query = "", filter = "firstName") => {
     try {
-      const response = await axios.get(`http://localhost:5000/contacts`, {
+      const response = await axios.get(`${API_URL}/contacts`, {
         params: { query, filter },
       });
       setContacts(response.data);
@@ -64,7 +65,7 @@ const ContactManagement = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:5000/contacts/${id}`);
+      await axios.delete(`${API_URL}/contacts/${id}`);
       setContacts((prev) => prev.filter((contact) => contact._id !== id));
     } catch (error) {
       console.error("Error deleting contact:", error);
@@ -104,7 +105,7 @@ const ContactManagement = () => {
     formData.append("file", file);
 
     try {
-      await axios.post("http://localhost:5000/contacts/import", formData, {
+      await axios.post("${API_URL}/contacts/import", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
