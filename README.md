@@ -4,7 +4,7 @@
 
 Welcome to the **AI Powered CRM** project! Our goal is to create a cutting-edge customer relationship management system that leverages artificial intelligence to streamline and enhance various business processes. While we're in the early stages of development, we've successfully implemented **Contact Management Features** as a foundational part of the system. This will eventually be integrated with advanced AI functionalities to automate tasks and offer insightful analytics.
 
-![Screenshot](/home/sheik/CRM/sc1.png)
+![Screenshot](/sc1.png)
 
 ## Database Schema
 
