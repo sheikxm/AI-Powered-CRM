@@ -77,4 +77,4 @@ Go to the frontend directory and install dependencies:
 ```bash
 cd frontend
 npm install
-
+# This is a single-line comment
