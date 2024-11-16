@@ -1,6 +1,6 @@
 {
-  "/(dashboard)/contacts/page": "app/(dashboard)/contacts/page.js",
+  "/(dashboard)/page": "app/(dashboard)/page.js",
   "/(dashboard)/contacts/addnewcontacts/page": "app/(dashboard)/contacts/addnewcontacts/page.js",
   "/(dashboard)/contacts/edit/[id]/page": "app/(dashboard)/contacts/edit/[id]/page.js",
-  "/(dashboard)/page": "app/(dashboard)/page.js"
+  "/(dashboard)/contacts/page": "app/(dashboard)/contacts/page.js"
 }

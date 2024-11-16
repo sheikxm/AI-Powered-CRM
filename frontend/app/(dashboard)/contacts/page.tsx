@@ -22,12 +22,13 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 import Link from "next/link";
 import debounce from "lodash.debounce";
 
 interface Contact {
-  _id?: string; // MongoDB ID field
+  _id?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -43,10 +44,9 @@ const ContactManagement = () => {
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = useState<keyof Contact>("firstName");
 
-  const [searchQuery, setSearchQuery] = useState(""); // Search input value
-  const [searchFilter, setSearchFilter] = useState<keyof Contact>("firstName"); // Filter type
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFilter, setSearchFilter] = useState<keyof Contact>("firstName");
 
-  // Fetch contacts based on query and filter
   const fetchContacts = async (query = "", filter = "firstName") => {
     try {
       const response = await axios.get(`http://localhost:5000/contacts`, {
@@ -57,12 +57,6 @@ const ContactManagement = () => {
       console.error("Error fetching contacts:", error);
     }
   };
-
-  // Debounced search function
-  const debouncedSearch = debounce((query: string, filter: keyof Contact) => {
-    fetchContacts(query, filter);
-    console.log(fetchContacts)
-  }, 500); // 500ms debounce delay
 
   useEffect(() => {
     fetchContacts();
@@ -86,8 +80,12 @@ const ContactManagement = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setSearchQuery(value);
-    debouncedSearch(value, searchFilter); // Trigger the debounced search
+    debouncedSearch(value, searchFilter);
   };
+
+  const debouncedSearch = debounce((query: string, filter: keyof Contact) => {
+    fetchContacts(query, filter);
+  }, 500);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -98,6 +96,69 @@ const ContactManagement = () => {
     setPage(0);
   };
 
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      await axios.post("http://localhost:5000/contacts/import", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      fetchContacts(); // Refresh the contact list after importing
+    } catch (error) {
+      console.error("Error importing contacts:", error);
+    }
+  };
+
+  const handleExport = () => {
+    if (contacts.length === 0) {
+      console.warn("No contacts to export.");
+      return;
+    }
+  
+    // Define CSV headers
+    const headers = ["First Name", "Last Name", "Email", "Phone", "Company", "Job Title"];
+  
+    // Convert contacts array into CSV rows
+    const csvRows = [
+      headers.join(","), // Header row
+      ...contacts.map((contact) =>
+        [
+          contact.firstName,
+          contact.lastName,
+          contact.email,
+          contact.phone,
+          contact.company,
+          contact.jobTitle,
+        ]
+          .map((value) => `"${value || ""}"`) // Escape values with quotes
+          .join(",") // Join fields with a comma
+      ),
+    ];
+  
+    // Create a CSV string
+    const csvString = csvRows.join("\n");
+  
+    // Create a Blob from the CSV string
+    const blob = new Blob([csvString], { type: "text/csv" });
+    const downloadUrl = URL.createObjectURL(blob);
+  
+    // Trigger download
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = "contacts.csv";
+    document.body.appendChild(link);
+    link.click();
+  
+    // Cleanup
+    URL.revokeObjectURL(downloadUrl);
+    document.body.removeChild(link);
+  };
   const sortedContacts = [...contacts].sort((a, b) => {
     if (a[orderBy] < b[orderBy]) return order === "asc" ? -1 : 1;
     if (a[orderBy] > b[orderBy]) return order === "asc" ? 1 : -1;
@@ -112,14 +173,39 @@ const ContactManagement = () => {
   return (
     <Box p={3}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          href="/contacts/addnewcontacts"
-        >
-          Add New Contact
-        </Button>
+        <Box display="flex" gap={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            href="/contacts/addnewcontacts"
+          >
+            Add New Contact
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            component="label"
+            startIcon={<UploadFileIcon />}
+          >
+            Import Contacts
+            <input
+              type="file"
+              accept=".csv"
+              hidden
+              onChange={handleFileUpload}
+            />
+          </Button>
+          {/* Export Button */}
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleExport}
+            startIcon={<UploadFileIcon />}
+          >
+            Export Contacts
+          </Button>
+        </Box>
         <Box display="flex" gap={2}>
           <FormControl>
             <InputLabel>Filter By</InputLabel>
@@ -139,7 +225,7 @@ const ContactManagement = () => {
             label="Search"
             variant="outlined"
             value={searchQuery}
-            onChange={handleSearchChange} // Trigger real-time search on change
+            onChange={handleSearchChange}
           />
         </Box>
       </Box>
@@ -174,15 +260,15 @@ const ContactManagement = () => {
                 <TableCell>{contact.jobTitle}</TableCell>
                 <TableCell>
                   <IconButton
-                    color="primary"
                     component={Link}
                     href={`/contacts/edit/${contact._id}`}
+                    color="primary"
                   >
                     <EditIcon />
                   </IconButton>
                   <IconButton
-                    color="secondary"
                     onClick={() => handleDelete(contact._id!)}
+                    color="secondary"
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -191,16 +277,16 @@ const ContactManagement = () => {
             ))}
           </TableBody>
         </Table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={contacts.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Paper>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={contacts.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Box>
   );
 };

@@ -1,29 +1,26 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("./config");
+const multer = require("multer");
+const csvParser = require("csv-parser");
+const fs = require("fs");
+require("./config"); // Ensure your MongoDB connection is set up in this file
+
+const Contact = require("./models/contact.js"); // Import the Contact model
+
 const app = express();
 const PORT = 5000;
 
-// MongoDB Connection
 // Middleware
 app.use(express.json());
 app.use(cors());
 
-// Schema and Model
-const contactSchema = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  phone: { type: String, required: true },
-  company: { type: String },
-  jobTitle: { type: String },
-});
-
-const Contact = mongoose.model("Contact", contactSchema);
+// Multer Configuration for File Upload
+const upload = multer({ dest: "uploads/" });
 
 // Routes
-// POST /contacts
+
+// POST /contacts - Add a new contact
 app.post("/contacts", async (req, res) => {
   try {
     const contact = new Contact(req.body);
@@ -38,14 +35,12 @@ app.post("/contacts", async (req, res) => {
   }
 });
 
-
-// GET /contacts
-
+// GET /contacts - Retrieve all contacts
 app.get("/contacts", async (req, res) => {
   try {
     const { query, filter } = req.query;
     const searchCriteria = query
-      ? { [filter]: { $regex: query, $options: "i" } } // Case-insensitive search
+      ? { [filter]: { $regex: query, $options: "i" } }
       : {};
 
     const contacts = await Contact.find(searchCriteria);
@@ -56,16 +51,15 @@ app.get("/contacts", async (req, res) => {
   }
 });
 
+// GET /contacts/:id - Retrieve a contact by ID
 app.get("/contacts/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Check if the ID is valid
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid ID format" });
     }
 
-    // Fetch the contact by ID
     const contact = await Contact.findById(id);
 
     if (!contact) {
@@ -79,7 +73,7 @@ app.get("/contacts/:id", async (req, res) => {
   }
 });
 
-// PUT /contacts/:id
+// PUT /contacts/:id - Update a contact
 app.put("/contacts/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -87,26 +81,66 @@ app.put("/contacts/:id", async (req, res) => {
       new: true,
       runValidators: true,
     });
+
     if (!updatedContact) {
       return res.status(404).json({ error: "Contact not found" });
     }
+
     res.status(200).json(updatedContact);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
-// DELETE /contacts/:id
+// DELETE /contacts/:id - Delete a contact
 app.delete("/contacts/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deletedContact = await Contact.findByIdAndDelete(id);
+
     if (!deletedContact) {
       return res.status(404).json({ error: "Contact not found" });
     }
+
     res.status(200).json({ message: "Contact deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /contacts/export - Export contacts as CSV
+
+// POST /contacts/import - Import contacts from CSV
+app.post("/contacts/import", upload.single("file"), async (req, res) => {
+  try {
+    const filePath = req.file.path;
+    const contacts = [];
+
+    fs.createReadStream(filePath)
+      .pipe(csvParser())
+      .on("data", (row) => {
+        contacts.push({
+          firstName: row.firstName,
+          lastName: row.lastName,
+          email: row.email,
+          phone: row.phone,
+          company: row.company,
+          jobTitle: row.jobTitle,
+        });
+      })
+      .on("end", async () => {
+        try {
+          await Contact.insertMany(contacts);
+          fs.unlinkSync(filePath);
+          res.status(200).json({ message: "Contacts imported successfully" });
+        } catch (error) {
+          console.error("Error saving contacts to the database:", error);
+          res.status(500).json({ error: "Failed to save contacts" });
+        }
+      });
+  } catch (error) {
+    console.error("Error processing file upload:", error);
+    res.status(500).json({ error: "Failed to process the file" });
   }
 });
 
