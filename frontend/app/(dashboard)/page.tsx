@@ -7,7 +7,7 @@ export default function HomePage() {
 
   return (    
       <Typography>
-        welcome to AI powered CRM Admin Dashboard
+        welcome to AI powered CRM Admin Dashboard...
       </Typography>
   );
 }
